@@ -4,7 +4,10 @@ class Star extends Component {
     constructor( props ) {
         super( props );
 
-        this.state = { star: { name: 'Jim Carrey', role: 'Ace Ventura: Pet Detective' }}
+        this.state = { 
+            star: { name: '', role: '' },
+            starList: []
+                }
 
     }
 
@@ -16,18 +19,25 @@ class Star extends Component {
     }
 
     handleSubmit = ( event ) => {
-        console.log( 'A star was submitted: ' + this.state.star.name );
         event.preventDefault();
+        this.setState({ starList: [ ...this.state.starList, this.state.star ]});
+        this.setState({ star: { name: '', role: '' }});
+        console.log( 'A star was submitted: ', this.state.star );
       }
 
     render() {
         return (
             <form onSubmit={ this.handleSubmit }>
-                <h2>Famous People</h2>
-                <input onChange={ this.handleChange( 'name' )} placeholder="Star Name" />
-                <input onChange={ this.handleChange( 'role' )} placeholder="Role" />
-                <p>{ this.state.star.name } is famous for { this.state.star.role }</p>
+                <input onChange={ this.handleChange( 'name' )} value={ this.state.star.name } placeholder="Name" />
+                <input onChange={ this.handleChange( 'role' )} value={ this.state.star.role } placeholder="Role" />
+                <p>Name: { this.state.star.name }</p>
+                <p>Role: { this.state.star.role }</p>
                 <input type="submit" value="Submit" />
+                <ul>
+                    { this.state.starList.map( star =>
+                    <li key={ star.name }>{ star.name } is famous for { star.role }</li>
+                    )}
+                </ul>
             </form>
         );
     }
